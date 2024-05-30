@@ -13,6 +13,6 @@ router.get("/seller", verifyToken, bookController.allSellerBooks); // get all bo
 router.get("/:bookId", verifyToken, bookController.singleBook);
 router.post("/", verifyToken, upload.single('book'), bookController.uploadBooks);
 router.put("/:bookId", verifyToken, bookController.updateBook);
-router.delete(":/bookId",verifyToken,); 
+router.delete("/:bookId", verifyToken, bookController.deleteBook);
 
 export default router;

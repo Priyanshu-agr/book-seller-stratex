@@ -35,6 +35,9 @@ export const singleBook = async (req: Request, res: Response) => {
     try {
         const bookId: number = parseInt(req.params.bookId);
         const sellerId: number = req.body.sellerId;
+        if (!sellerId) {
+            return res.status(404).json({ message: "Provide seller id   " });
+        }
         const book = await prisma.book.findUnique({
             where: {
                 id: bookId
@@ -59,6 +62,9 @@ export const uploadBooks = async (req: Request, res: Response) => {
     try {
         const sellerId: number = parseInt(req.body.sellerId);
         const path: string = req.file?.path!;
+        if (!sellerId) {
+            return res.status(404).json({ message: "Provide seller id" });
+        }
         console.log(req.file)
         fs.createReadStream(path)
             .pipe(csvParser())
@@ -97,6 +103,9 @@ export const updateBook = async (req: Request, res: Response) => {
     try {
         const bookId: number = parseInt(req.params.bookId);
         const sellerId: number = req.body.sellerId;
+        if (!sellerId) {
+            return res.status(404).json({ message: "Provide seller id" });
+        }
         const book = await prisma.book.findFirst({
             where: {
                 id: bookId
@@ -113,7 +122,7 @@ export const updateBook = async (req: Request, res: Response) => {
                 title: req.body.title,
                 author: req.body.author,
                 price: req.body.price,
-                publishedDate: new Date(req.body.publishedDate),
+                publishedDate: new Date(req.body.publishedDate || book.publishedDate),
                 sellerId: sellerId
             }
         });
@@ -130,6 +139,12 @@ export const deleteBook = async (req: Request, res: Response) => {
     try {
         const bookId: number = parseInt(req.params.bookId);
         const sellerId: number = req.body.sellerId;
+        if (!bookId) {
+            return res.status(404).json({ message: "Provide book id" });
+        }
+        if (!sellerId) {
+            return res.status(404).json({ message: "Provide seller id" });
+        }
         const book = await prisma.book.findFirst({
             where: {
                 id: bookId
