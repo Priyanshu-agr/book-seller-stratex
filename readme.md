@@ -16,7 +16,7 @@ Steps to run the code
 
 - Generate Prisma Client with the following command:
 
-    `npx prisma generate    `
+    `npx prisma generate`
 
 - To start the server run command:
 
